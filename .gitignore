@@ -1,0 +1,79 @@
+# Ignore build output directories
+bin/
+obj/
+Debug/
+Release/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and temporary files
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+
+# Package and NuGet files
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio temporary files
+.vs/
+.vscode/
+
+# Rider and JetBrains IDE files
+.idea/
+*.iml
+*.sln.iml
+
+# ASP.NET Core files
+appsettings*.json
+appsettings.Development.json
+
+# Entity Framework Migrations
+*.Designer.cs
+*.dbmdl
+*.jfm
+
+# Resharper files
+_ReSharper*/
+*.DotSettings.user
+
+# Azure and Docker files
+azds/
+docker-compose.override.yml
+
+# macOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+desktop.ini
+
+# Node.js dependencies (if included in the solution)
+node_modules/
+
+# Yarn integrity file
+.yarn-integrity
+
+# Python virtual environment (if applicable)
+.env/
+
+# npm package lock files (if using npm)
+package-lock.json
+
+# Logs
+*.log
+
+# Additional files for git-lfs or optional
+*.mp4
+*.avi
+*.mkv
+*.zip
