@@ -11,7 +11,7 @@ public class Expense : Entity
     public decimal Amount { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime DateModified { get; set; }
-    public ExpenseCategories Category { get; set; }
+    public ExpenseCategory Category { get; set; }
     public string? OtherCategoryName { get; set; }
     public Guid UserId { get; set; }
     

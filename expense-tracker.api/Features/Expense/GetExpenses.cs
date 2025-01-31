@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Carter;
 using expense_tracker.api.Database;
+using expense_tracker.api.Utilities;
 using expense_tracker.core.Enumerations;
 using expense_tracker.core.Primitives;
 using FluentValidation;
@@ -32,7 +33,7 @@ public static class GetExpenses
             RuleFor(u => u.UserEmail)
                 .NotEmpty().WithMessage("Email is required")
                 .EmailAddress().WithMessage("Invalid email");
-            RuleFor(x => x.Filter).NotEmpty().WithMessage("You must provide a filter.");
+            RuleFor(x => x.Filter).NotNull().WithMessage("You must provide a filter.");
             RuleFor(x => x.StartDate)
                 .NotNull()
                 .When(x => x.Filter == ExpenseFilter.Custom)
@@ -61,9 +62,7 @@ public static class GetExpenses
 
             try
             {
-                var user = await context.Users.FirstOrDefaultAsync(u 
-                    => u.Email == request.UserEmail, cancellationToken);
-                
+                var user = await context.GetCurrentUserByEmail(request.UserEmail, cancellationToken);
                 if (user == null)
                 {
                     return Result.Failure<List<core.Entities.Expense>>(
@@ -110,14 +109,11 @@ public class GetExpensesEndpoint : ICarterModule
             async (ExpenseFilter filter, DateTime? startDate, DateTime? endDate, HttpContext httpContext, ISender sender) 
                 =>
             {
-                var user = httpContext.User;
-                if (!(user.Identity?.IsAuthenticated ?? false)) return Results.Unauthorized();
-                var userEmail = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userEmail = httpContext.GetUserEmail();
                 if (userEmail is null) return Results.Unauthorized();
                 var command = GetExpenses.Query.Create(userEmail, filter, startDate, endDate);
                 var response = await sender.Send(command, httpContext.RequestAborted);
-                if (!response.IsSuccess) return Results.BadRequest(response.Error);
-                return Results.Ok(response.Value);
+                return !response.IsSuccess ? Results.BadRequest(response.Error) : Results.Ok(response.Value);
             }).RequireAuthorization();
     }
 }

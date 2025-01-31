@@ -1,6 +1,6 @@
 namespace expense_tracker.core.Enumerations;
 
-public enum ExpenseCategories : uint
+public enum ExpenseCategory : uint
 {
     Others = 0,
     Groceries = 1,
