@@ -32,6 +32,7 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = jwtSettings?.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtSettings?.Secret ?? throw new Exception("Missing JWT token."))),
+            ClockSkew = TimeSpan.Zero
         };
     });
 builder.Services.AddTransient<JwtService>();
@@ -54,10 +55,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapCarter();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapCarter();
 app.MapControllers();
 app.Run();

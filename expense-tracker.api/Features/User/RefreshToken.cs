@@ -80,7 +80,7 @@ public static class RefreshToken
 
                 var refreshTokenResponse = new RefreshTokenResponse
                 {
-                    AccessToken = jwtService.GenerateToken(user.Email, TimeSpan.FromDays(20)),
+                    AccessToken = jwtService.GenerateToken(user.Email, TimeSpan.FromMinutes(20)),
                     RefreshToken = newRefreshToken.Token,
                 };
                 return Result.Success(refreshTokenResponse);
